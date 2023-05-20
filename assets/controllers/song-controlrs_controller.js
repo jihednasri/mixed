@@ -1,22 +1,28 @@
-<? php
-namespace App\Controller;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-class SongController extends AbstractController {
-    #[Route('/api/songs/{id<\d+>}', methods: ['GET'], name: 'api_songs_get_one')]
-    public function getSong(int $id, LoggerInterface $logger): Response {
-        // TODO query the database
-        $song = [
-            'id' => $id,
-            'name' => 'Waterfalls',
-            'url' => 'https://symfonycasts.s3.amazonaws.com/sample.mp3',
-        ];
-        $logger -> info('Returning API response for song {song}', [
-            'song' => $id,
-        ]);
-        return $this -> json($song);
+import { Controller } from '@hotwired/stimulus';
+
+/*
+ * This is an example Stimulus controller!
+ *
+ * Any element with a data-controller="hello" attribute will cause
+ * this controller to be executed. The name "hello" comes from the filename:
+ * hello_controller.js -> "hello"
+ *
+ * Delete this file or adapt it for your use!
+ */
+import axios from 'axios';
+
+export default class extends Controller {
+    static values = {
+        infoUrl: String
+    }
+
+    play(event) {
+        event.preventDefault();
+
+        axios.get(this.infoUrlValue)
+            .then((response) => {
+                const audio = new Audio(response.data.url);
+                audio.play();
+            });
     }
 }
